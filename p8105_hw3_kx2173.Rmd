@@ -8,6 +8,9 @@ output: github_document
 library(tidyverse)
 ```
 
+
+## Problem 1
+
 Load tha data from package.
 ```{r}
 library(p8105.datasets)
@@ -23,7 +26,7 @@ instacart %>%
 ```
 
 
-### How many aisles are there, and which aisles are the most items ordered from?
+#### How many aisles are there, and which aisles are the most items ordered from?
 ```{r}
 instacart %>% 
   group_by(aisle) %>% 
@@ -33,7 +36,7 @@ instacart %>%
 There are 134 aisles, and the item "fresh vegetables" is the most item ordered from.
 
 
-### Make a plot that shows the number of items ordered in each aisle, limiting this to aisles with more than 10000 items ordered. Arrange aisles sensibly, and organize your plot so others can read it.
+#### Make a plot that shows the number of items ordered in each aisle, limiting this to aisles with more than 10000 items ordered. Arrange aisles sensibly, and organize your plot so others can read it.
 ```{r}
 instacart %>% 
   group_by(aisle) %>% 
@@ -51,7 +54,7 @@ instacart %>%
 ```
 
 
-### Make a table showing the three most popular items in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”. Include the number of times each item is ordered in your table.
+#### Make a table showing the three most popular items in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”. Include the number of times each item is ordered in your table.
 ```{r}
 baking_ingredients = instacart %>% 
   filter(aisle == "baking ingredients") %>% 
@@ -79,4 +82,41 @@ table_three =
 
 knitr::kable(table_three)
 ```
+
+
+#### Make a table showing the mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week; format this table for human readers.
+```{r}
+mean_hr_of_two = instacart %>% 
+  filter(product_name %in% c("Pink Lady Apples", "Coffee Ice Cream")) %>%
+  group_by(product_name, order_dow) %>% 
+  summarise(mean_hr = 
+            round(mean(order_hour_of_day, na.rm = TRUE),digits = 1), 
+            .groups = "drop") %>% 
+  mutate(order_dow = recode(order_dow,
+                            `1` = "Monday",
+                            `2` = "Tuesday",
+                            `3` = "Wednesday",
+                            `4` = "Thursday",
+                            `5` = "Friday",
+                            `6` = "Saturday",
+                            `0` = "Sunday")) %>% 
+  pivot_wider(
+    names_from = "order_dow",
+    values_from = "mean_hr"
+  )
+
+knitr::kable(mean_hr_of_two,
+             caption = "Mean hour of the day for which Pink Lady Apples and Coffee Ice Cream are ordered")
+```
+
+
+
+
+
+
+
+
+
+
+
 
