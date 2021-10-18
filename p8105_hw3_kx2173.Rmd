@@ -1,0 +1,82 @@
+---
+title: "p8105_hw3_kx2173"
+author: "ke"
+output: github_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+Load tha data from package.
+```{r}
+library(p8105.datasets)
+data("instacart")
+```
+
+This data set has `r ncol(instacart)` columns and `r nrow(instacart)` rows, with `r ncol(instacart)` variables including `r names(instacart)`.
+
+
+```{r}
+instacart %>% 
+  janitor::clean_names() 
+```
+
+
+### How many aisles are there, and which aisles are the most items ordered from?
+```{r}
+instacart %>% 
+  group_by(aisle) %>% 
+  summarize(n_obs = n()) %>% 
+  arrange(desc(n_obs))
+```
+There are 134 aisles, and the item "fresh vegetables" is the most item ordered from.
+
+
+### Make a plot that shows the number of items ordered in each aisle, limiting this to aisles with more than 10000 items ordered. Arrange aisles sensibly, and organize your plot so others can read it.
+```{r}
+instacart %>% 
+  group_by(aisle) %>% 
+  summarize(n_obs = n()) %>% 
+  filter(n_obs > 10000) %>% 
+  mutate(aisle = fct_reorder(aisle, n_obs)) %>% 
+  ggplot(aes(x = n_obs, y = aisle)) + 
+  geom_col(width = .5,
+           position = position_dodge(width = 1)) +
+  labs(title = "Number of items ordered in each aisle",
+       subtitle = "with aisles more than 10,000 ordered items",
+       x = "Number of items ordered",
+       y = "Category of aisle"
+       )
+```
+
+
+### Make a table showing the three most popular items in each of the aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”. Include the number of times each item is ordered in your table.
+```{r}
+baking_ingredients = instacart %>% 
+  filter(aisle == "baking ingredients") %>% 
+  group_by(product_name) %>% 
+  summarize(n_obs = n()) %>% 
+  arrange(desc(n_obs)) %>% 
+  head(3)
+
+dog_food_care = instacart %>% 
+  filter(aisle == "dog food care") %>% 
+  group_by(product_name) %>% 
+  summarize(n_obs = n()) %>% 
+  arrange(desc(n_obs)) %>% 
+  head(3)
+
+packaged_vegetables_fruits = instacart %>% 
+  filter(aisle == "packaged vegetables fruits") %>% 
+  group_by(product_name) %>% 
+  summarize(n_obs = n()) %>% 
+  arrange(desc(n_obs)) %>% 
+  head(3)
+
+table_three = 
+  bind_rows(baking_ingredients, dog_food_care, packaged_vegetables_fruits) 
+
+knitr::kable(table_three)
+```
+
