@@ -192,6 +192,55 @@ brfss_clean %>%
 ```
 
 
+## Problem 3
+
+
+#### Load, tidy, and otherwise wrangle the data. 
+```{r}
+accel_df = read_csv("data_problem3/accel_data.csv")
+
+accel_clean = accel_df %>% 
+  janitor::clean_names() %>% 
+  mutate(
+    weekday_weekend = case_when(
+    day == "Monday" ~ "Weekday",
+    day == "Tuesday" ~ "Weekday",
+    day == "Wednesday" ~ "Weekday",
+    day == "Thursday" ~ "Weekday",
+    day == "Friday" ~ "Weekday",
+    day == "Saturday" ~ "Weekend",
+    day == "Sunday" ~ "Weekend",
+  ),
+  day = as.factor(day),
+  day = fct_relevel(day,
+                    c("Monday", "Tuesday", "Wednesday", "Thursday", 
+                      "Friday", "Saturday", "Sunday"))) %>% 
+  relocate(week, day_id, day, weekday_weekend) %>% 
+  pivot_longer(
+    activity_1:activity_1440,
+    names_to = "activity_min",
+    names_prefix = "activity_",
+    values_to = "activity_counts"
+  ) %>% 
+  mutate(
+    activity_min = as.numeric(activity_min),
+    weekday_weekend = as.factor(weekday_weekend)
+    )
+  
+```
+
+Describe the resulting dataset:
+This data set has `r ncol(accel_clean)` variables and `r nrow(accel_clean)` observations.
+Variables are `r names(accel_clean)`.
+Here are variable descriptions:
+`r colnames(accel_clean)[1]`: Number of week.
+`r colnames(accel_clean)[2]`: Number of day.
+`r colnames(accel_clean)[3]`: the day that related to `r colnames(accel_clean)[2]`.
+`r colnames(accel_clean)[4]`: Whether it is a weekday or weekend.
+`r colnames(accel_clean)[5]`: Each activity minute.
+`r colnames(accel_clean)[6]`: The counts on each activity minute.
+
+
 
 
 
