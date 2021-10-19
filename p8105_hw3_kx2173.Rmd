@@ -110,7 +110,27 @@ knitr::kable(mean_hr_of_two,
 ```
 
 
+## Problem 2
 
+
+Load data from package.
+```{r}
+library(p8105.datasets)
+data("brfss_smart2010")
+```
+
+#### Do some data cleaning
+```{r}
+brfss_clean = brfss_smart2010 %>% 
+  janitor::clean_names() %>% 
+  filter(topic == "Overall Health",
+         response %in% c("Excellent", "Very good", "Good", "Fair", "Poor")) %>% 
+  mutate(response = 
+           fct_relevel(response, 
+                       c("Excellent", "Very good", "Good", "Fair", "Poor"))) %>%
+  arrange(desc(response)) %>% 
+  distinct()
+```
 
 
 
