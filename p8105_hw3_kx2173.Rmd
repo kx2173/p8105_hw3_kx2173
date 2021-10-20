@@ -264,7 +264,7 @@ accel_clean %>%
   ) %>% 
   knitr::kable(caption = "Total activity data over the day") 
 ```
-Trend: Strictly, there is no apparent trend for the data on each day over these five weeks, but it seems that the male is .
+Trend: Strictly, there is no apparent trend for the data on each day over these five weeks.
 
 
 #### Make a single-panel plot that shows the 24-hour activity time courses for each day and use color to indicate day of the week. 
