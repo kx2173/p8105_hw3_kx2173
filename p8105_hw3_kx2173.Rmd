@@ -288,7 +288,7 @@ accel_clean %>%
   theme(plot.title = element_text(hjust = .5))
 ```
 Conclusion:
-Based on the output graph, we can see that this 63 year-old male is active at noon on Sunday, and is active at around 9 pm. on Friday.
+Based on the output graph, we can see that this 63 year-old male is active at 7 am., at noon, at 4:30 pm on Thursday,Saturday and Sunday, and is active at around 9 pm. on most of days(excluding Sunday). 
 
 
 
